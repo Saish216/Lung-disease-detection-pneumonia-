@@ -1,145 +1,157 @@
-# Pneumonia Detection Using X-RAY With AWS, Docker, GitHub Actions, Flask
+Your custom UI frontend (the one with the bar animation)
 
-1. [Introduction](#introduction)
-2. [Flask App](#flask-app)
-3. [How To Run?](#how-to-run)
-4. [Main Files of Structure](#main-files-of-structure)
-5. [Deployment](#deployment)
-6. [Continuous Integration and Continuous Deployment (CI/CD)](#continuous-integration-and-continuous-deployment-cicd)
+The Flask + ML integration
 
-Link to Video Explanation of Project - [https://youtu.be/wsyCQOQOwuc?si=Ys4MtYWFtxNy47oJ](https://youtu.be/wsyCQOQOwuc?si=Ys4MtYWFtxNy47oJ)
+Realistic academic-level explanation
 
-## Introduction
+Credits to Saish Jethe, Aryan Jha, Kush Gowda
 
-This project aims to create a Flask web application for the detection of pneumonia using X-ray images. With a 22-layered neural network model, we have achieved an accuracy rate of 91%. The project is designed with a modular approach, with different files dedicated to data ingestion, preparing callbacks, training, and prediction. Deployment was carried out on AWS using Docker containerization, and we have established a CI/CD pipeline through GitHub Actions.
+Cleaner and more readable Markdown layout for GitHub
 
+🧠 Pneumonia Detection Using X-Ray
 
-## Flask App
-<img width="905" alt="Flask Image Xray" src="https://github.com/sandesh0202/Xray-for-Pneumonia/assets/74035326/4e65bd5a-d7bf-4502-bdb5-7d12ce3bb99d">
+A deep learning–powered web application built using Flask, capable of detecting Pneumonia from X-ray images with the help of a trained convolutional neural network (CNN).
 
-## How To Run?
-#### STEPS:
-Clone the repository
-```
-https://github.com/sandesh0202/Xray-for-Pneumonia
-```
+👨‍💻 Team Members
 
-#### STEP 01- Create a conda environment after opening the repository
-```
+Saish Jethe
+
+Aryan Jha
+
+Kush Gowda
+
+📘 Table of Contents
+
+Overview
+
+Project Workflow
+
+How to Run
+
+Frontend UI
+
+Main File Structure
+
+Model and Dataset
+
+Deployment (Optional)
+
+Acknowledgements
+
+🩺 Overview
+
+This project implements an AI-based system for Pneumonia Detection using X-Ray images.
+A trained CNN model classifies the uploaded image as either:
+
+Pneumonia, or
+
+Normal
+
+The model achieves high accuracy on the Kaggle chest X-ray dataset, and is integrated into an interactive Flask web app for real-time predictions.
+
+Features:
+
+Upload an X-ray image via the browser
+
+Displays the prediction with animated confidence bar
+
+Clean, modern, responsive web interface
+
+Flask backend with TensorFlow/Keras model loading
+
+Fully modular folder structure for reusability
+
+⚙️ Project Workflow
+
+User uploads an X-ray image via the frontend.
+
+The image is converted to a base64 string and sent to the Flask backend.
+
+Flask decodes and preprocesses the image (resizing, normalization).
+
+The trained model (model.h5) predicts whether it’s Pneumonia or Normal.
+
+The result (prediction + confidence) is sent back and visualized on-screen.
+
+🧩 How To Run
+1️⃣ Clone this repository
+git clone https://github.com/Saish216/Xray-Pneumonia.git
+cd Xray-Pneumonia
+
+2️⃣ Create a virtual environment (using Conda or venv)
 conda create -n xray python=3.11.3 -y
-```
-```
 conda activate xray
-```
-#### STEP 02- install the requirements
-```
+
+3️⃣ Install dependencies
 pip install -r requirements.txt
-```
-```
-#Finally run the following command
+
+4️⃣ Run the Flask application
 python app.py
-```
-Now, open up you local host and port
-#### DVC cmd
-```
-dvc init
-dvc repro
-dvc dag
-```
-
-### AWS-CICD-Deployment-with-Github-Actions
-#### 1. Login to AWS console.
-#### 2. Create IAM user for deployment
-```
-#with specific access
-
-1. EC2 access : It is virtual machine
-
-2. ECR: Elastic Container registry to save your docker image in aws
 
 
-#Description: About the deployment
+Now open your browser and go to 👉 http://127.0.0.1:8080/
 
-1. Build docker image of the source code
+Upload an X-ray image and check the result!
 
-2. Push your docker image to ECR
+🎨 Frontend UI
 
-3. Launch Your EC2 
+The web app features a modern, minimal, and responsive UI:
 
-4. Pull Your image from ECR in EC2
+Drag & drop image upload
 
-5. Lauch your docker image in EC2
+Live preview before prediction
 
-#Policy:
+Animated confidence progress bar
 
-1. AmazonEC2ContainerRegistryFullAccess
+Color-coded prediction display (🟩 Normal / 🟥 Pneumonia)
 
-2. AmazonEC2FullAccess
+Here’s what it looks like 👇
 
-Create and Download the Access Key and Secret Access Key from IAM -> Settings
-```
-#### 3. Create ECR repo to store/save docker image
-Save the URI - demo > 691258540533.dkr.ecr.ap-south-1.amazonaws.com/xray
-#### 4. Create EC2 machine (Ubuntu)
-#### 5. Open EC2 and Install docker in EC2 Machine:
-```
-#optional
+🗂️ Main File Structure
+File / Folder	Description
+app.py	Flask application entry point
+predict.py	Loads the trained model and performs predictions
+templates/index.html	Frontend HTML + JS code
+xray/utils/common.py	Helper functions for decoding/encoding images
+artifacts/training/model.h5	Pre-trained CNN model
+requirements.txt	Python dependencies list
+config/, pipeline/, entity/	Supporting project modules
+main.py	Pipeline orchestration (training & data ingestion)
+🧬 Model and Dataset
 
-sudo apt-get update -y
+Model: Custom-trained CNN (model.h5)
 
-sudo apt-get upgrade
-```
-#required
-```
-curl -fsSL https://get.docker.com -o get-docker.sh
-```
-```
-sudo sh get-docker.sh
-```
-```
-sudo usermod -aG docker ubuntu
-```
-```
-newgrp docker
-```
-#### 6. Configure EC2 as self-hosted runner:
-```
-setting>actions>runner>new self hosted runner> choose os> then run command one by one
-```
-#### 7. Setup github secrets:
-```
-AWS_ACCESS_KEY_ID=
+Framework: TensorFlow / Keras
 
-AWS_SECRET_ACCESS_KEY=
+Input Size: 150x150 pixels
 
-AWS_REGION = ap-south-1
+Output: Binary classification (Pneumonia / Normal)
 
-AWS_ECR_LOGIN_URI = demo>>  691258540533.dkr.ecr.ap-south-1.amazonaws.com
+Dataset Source: Kaggle Chest X-Ray Dataset
 
-ECR_REPOSITORY_NAME = xray
-```
+🚀 Deployment (Optional)
 
-## Main Files of Structure 
+The project can be containerized and deployed using:
 
-1. config.yaml - Contains location of files 
-2. params.yaml - Adjust Project Parameters as per Requirements 
-3. entity - Update the Configuration 
-4. configuration manager in src config - Reads configuration & creates directories.
-5. components - Main Functions of Project
-6. pipeline - Pipeline for End-to-End Processing
-7. main.py - Main file for Final Execution
-8. dvc.yaml - Execution using DVC
-9. app.py - Flask Web App File
-10. templates/index.html - Design of Web App
+Docker – for packaging the Flask app with the trained model
 
-## Deployment
-The application has been deployed on AWS using Docker containerization. This allows users to access the pneumonia detection service over the internet. The Docker container ensures that the application and its dependencies are isolated and can be easily deployed and scaled.
+AWS EC2 + ECR – for cloud hosting
 
-## Continuous Integration and Continuous Deployment (CI/CD)
-We have established a CI/CD pipeline using GitHub Actions. This pipeline automates the process of building, testing, and deploying the application whenever changes are pushed to the repository. This ensures that the application remains up to date and reliable.
+GitHub Actions (CI/CD) – for automatic build & deploy pipelines
 
----
+❤️ Acknowledgements
 
-Thank you for your interest in our Pneumonia Detection Using X-Ray Images project. If you have any questions or feedback, please don't hesitate to reach out.
+This project was developed as part of our academic coursework under the guidance of
+Prof. A. V. Vidhate, Head of Department (Computer Science).
 
-**Happy coding!**
+We would like to express our sincere gratitude for his continuous support, mentorship, and encouragement throughout the development of this project.
+
+We also thank the open-source community for providing valuable tools, frameworks, and datasets that made this project possible.
+
+🧑‍💻 Developed By
+
+Saish Jethe, Aryan Jha, and Kush Gowda
+Department of Computer Science
+"Pneumonia Detection Using X-Ray" — 2025
+
+✨ “AI doesn’t replace doctors — it helps them save more lives.” 🫁
