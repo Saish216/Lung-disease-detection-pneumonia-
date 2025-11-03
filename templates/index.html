@@ -174,15 +174,21 @@ $("#predict").click(function() {
       const confidence = result.confidence || 0;
       const color = result.prediction === "Pneumonia" ? "#dc3545" : "#28a745";
 
-      const resultHTML = `
-        <div class="result-prediction" style="color:${color};">
-          ${result.prediction}
-        </div>
-        <div class="confidence-bar">
-          <div class="confidence-fill" style="background-color:${color};">0%</div>
-        </div>
-        <p class="mt-2 text-muted">Confidence: <b>${confidence}%</b></p>
-      `;
+
+      const barColor = result.prediction === "Pneumonia" 
+  ? "linear-gradient(90deg, #ff4b5c, #dc3545)"   // red shades
+  : "linear-gradient(90deg, #3ddc97, #28a745)";  // green shades
+
+const resultHTML = `
+  <div class="result-prediction" style="color:${color};">
+    ${result.prediction}
+  </div>
+  <div class="confidence-bar">
+    <div class="confidence-fill" style="background:${barColor};">0%</div>
+  </div>
+  <p class="mt-2 text-muted">Confidence: <b>${confidence}%</b></p>
+`;
+
 
       $("#resultBox").html(resultHTML);
 

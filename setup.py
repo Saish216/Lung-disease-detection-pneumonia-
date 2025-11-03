@@ -7,9 +7,9 @@ with open("README.md", "r", encoding="utf-8") as f:
 __version__ = "0.0.0"
 
 REPO_NAME = "Xray-for-Pneumonia"
-AUTHOR_USER_NAME = "sandesh0202"
+AUTHOR_USER_NAME = "saishj216"
 SRC_REPO = "xray"
-AUTHOR_EMAIL = "sandeshpargaonkar7@gmail.com"
+AUTHOR_EMAIL = "saish.jethe216@gmail.com"
 
 
 setuptools.setup(
