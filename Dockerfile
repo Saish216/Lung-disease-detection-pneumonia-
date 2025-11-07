@@ -1,21 +1,37 @@
-# Use Python 3.11.3 (same as your local Conda environment)
-FROM python:3.11.3-slim
+# ===============================
+# Stage 1: Base Image
+# ===============================
+FROM python:3.10-slim
 
-# Prevent interactive prompts and keep image small
+# Prevent interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Set the working directory
+# ===============================
+# Stage 2: System Dependencies
+# ===============================
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    awscli \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# ===============================
+# Stage 3: Setup App
+# ===============================
 WORKDIR /app
 
-# Copy project files
-COPY . .
+# Copy everything
+COPY . /app
 
-# Upgrade pip and install dependencies
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Expose port 8080 for Flask
+# ===============================
+# Stage 4: Expose Port and Run
+# ===============================
 EXPOSE 8080
-
-# Run your Flask app
-CMD ["python", "app.py"]
+CMD ["python3", "app.py"]
