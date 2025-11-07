@@ -1,24 +1,21 @@
-# Use Python 3.11.3 as the base image
-FROM python:3.11.3
+# Use Python 3.11.3 (same as your local Conda environment)
+FROM python:3.11.3-slim
 
-# Install system dependencies, including AWS CLI
-RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    libgl1-mesa-glx \
-    awscli && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Prevent interactive prompts and keep image small
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Set the working directory
 WORKDIR /app
 
-# Copy application code
-COPY . /app
+# Copy project files
+COPY . .
 
-# Install Python dependencies
-RUN pip install -r requirements.txt
+# Upgrade pip and install dependencies
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port 80 (modify this if your app uses a different port)
-EXPOSE 80
+# Expose port 8080 for Flask
+EXPOSE 8080
 
-# Specify the command to run your application
-CMD ["python3", "app.py"]
+# Run your Flask app
+CMD ["python", "app.py"]
