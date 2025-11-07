@@ -1,14 +1,14 @@
-# ===============================
-# Stage 1: Base Image
-# ===============================
-FROM python:3.10-slim
+# ======================================
+# Base Image
+# ======================================
+FROM python:3.11.3-slim
 
 # Prevent interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# ===============================
-# Stage 2: System Dependencies
-# ===============================
+# ======================================
+# Install system-level dependencies
+# ======================================
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
     libgl1 \
     libglib2.0-0 \
@@ -18,20 +18,24 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     awscli \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# ===============================
-# Stage 3: Setup App
-# ===============================
+# ======================================
+# Set working directory
+# ======================================
 WORKDIR /app
 
-# Copy everything
+# ======================================
+# Copy project files
+# ======================================
 COPY . /app
 
+# ======================================
 # Install Python dependencies
+# ======================================
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# ===============================
-# Stage 4: Expose Port and Run
-# ===============================
+# ======================================
+# Expose port and start app
+# ======================================
 EXPOSE 8080
-CMD ["python3", "app.py"]
+CMD ["python", "app.py"]
